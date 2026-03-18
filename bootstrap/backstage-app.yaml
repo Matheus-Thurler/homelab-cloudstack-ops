@@ -14,23 +14,31 @@ spec:
     helm:
       values: |
         backstage:
+          # Use official Backstage image
           image:
             registry: ghcr.io
             repository: backstage/backstage
             tag: latest
-            pullPolicy: IfNotPresent
+          
+          # App Configuration
           appConfig:
             app:
               title: Homelab IDP
-              baseUrl: http://backstage.matheus.me
+              # Usar localhost para deixar Backstage usar a URL atual do navegador
+              baseUrl: http://localhost:7007
+            
             backend:
-              baseUrl: http://backstage.matheus.me
+              # Backend também usa localhost (o gateway redireciona)
+              baseUrl: http://localhost:7007
               listen:
                 port: 7007
               cors:
-                origin: http://backstage.matheus.me
+                origin: "*"
                 methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
                 credentials: true
+              auth:
+                keys:
+                  - secret: "YOUR_SECRET_KEY_CHANGE_THIS"
               database:
                 client: pg
                 connection:
@@ -38,17 +46,34 @@ spec:
                   port: 5432
                   user: backstage
                   password: backstage123
+              cache:
+                store: memory
+            
             catalog:
+              import:
+                entityFilename: "catalog-info.yaml"
+                pullRequestBranchName: "backstage-integration"
               rules:
-              - allow: [Component, System, API, Resource, Location]
+              - allow: [Component, System, API, Resource, Location, Template]
               locations:
-                # Location padrão - Exemplos do Backstage
-                - type: url
-                  target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all-components.yaml
-                # Location para recursos Crossplane do repositório
-                - type: url
-                  target: https://raw.githubusercontent.com/Matheus-Thurler/homelab-cloudstack-ops/main/catalog/crossplane-resources.yaml
-          extraEnvVars: []
+              - type: url
+                target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all-components.yaml
+              - type: url
+                target: https://raw.githubusercontent.com/Matheus-Thurler/homelab-cloudstack-ops/main/catalog/crossplane-resources.yaml
+            
+            auth:
+              environment: production
+              providers:
+                guest: null
+            
+            techdocs:
+              builder: local
+              generator:
+                runIn: local
+              publisher:
+                type: local
+
+        # PostgreSQL Sub-chart
         postgresql:
           enabled: true
           auth:
@@ -57,15 +82,22 @@ spec:
             database: backstage
           primary:
             persistence:
-              enabled: true
-              size: 2Gi
+              enabled: false
+          metrics:
+            enabled: false
+
+        # Service configuration
         service:
           type: ClusterIP
-          ports:
-            backend: 7007
+
+        # Ingress (optional)
+        ingress:
+          enabled: false
+
   destination:
     server: https://kubernetes.default.svc
     namespace: backstage
+  
   syncPolicy:
     automated:
       prune: true
