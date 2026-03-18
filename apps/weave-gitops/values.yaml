@@ -1,5 +1,0 @@
-weave-gitops:
-  adminUser:
-    create: true
-    username: admin
-    passwordHash: "$2y$05$nRqkfvSQlO9pvdNL8OV18uoilL01nlmwT0bBrr8i7vRlAmr32Hm9u"

@@ -1,8 +1,0 @@
-apiVersion: v2
-name: weave-gitops-loader
-version: 1.0.0
-dependencies:
-  - name: weave-gitops
-    version: "4.0.36" # Ou a versão que desejar
-    repository: "https://weaveworks.github.io"
-  
