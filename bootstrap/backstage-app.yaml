@@ -24,16 +24,14 @@ spec:
           appConfig:
             app:
               title: Homelab IDP
-              # Usar localhost para deixar Backstage usar a URL atual do navegador
-              baseUrl: http://localhost:7007
+              baseUrl: http://backstage.matheus.me
             
             backend:
-              # Backend também usa localhost (o gateway redireciona)
-              baseUrl: http://localhost:7007
+              baseUrl: http://backstage.matheus.me
               listen:
                 port: 7007
               cors:
-                origin: "*"
+                origin: http://backstage.matheus.me
                 methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
                 credentials: true
               auth:
