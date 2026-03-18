@@ -59,14 +59,9 @@ spec:
           limits:
             memory: "512Mi"
             cpu: "300m"
-  volumeClaimTemplates:
-  - metadata:
-      name: postgres-storage
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: 10Gi
+      volumes:
+      - name: postgres-storage
+        emptyDir:
 ---
 apiVersion: v1
 kind: Service
