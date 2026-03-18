@@ -142,14 +142,6 @@ static:
           displayData:
             collapsed: false
           items:
-          - title: Pihole
-            description: Serviço de DNS local
-            icon: fas fa-microchip
-            url: https://pihole-matheus.me/admin/login
-            statusCheckUrl: http://192.168.68.121/admin/login
-            statusCheck: true
-            statusCheckAllowInsecure: true
-            statusCheckInterval: 20
           - title: Grafana
             description: Grafana e Prometheus!
             icon: mdi-bell-alert
