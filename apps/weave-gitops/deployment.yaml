@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: weave-gitops
-          image: weaveworks/weave-gitops:latest
+          image: ghcr.io/weaveworks/weave-gitops:0.26.0
           args:
             - "--namespace=weave-gitops"
           ports:
