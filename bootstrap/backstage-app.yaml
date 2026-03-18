@@ -1,0 +1,51 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: backstage
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: backstage
+    repoURL: https://backstage.github.io/charts
+    targetRevision: 2.6.3
+    helm:
+      values: |
+        backstage:
+          image:
+            repository: backstage/backstage-demo
+            tag: latest
+          extraEnvVars:
+            - name: APP_CONFIG_app_baseUrl
+              value: http://backstage.matheus.me
+            - name: APP_CONFIG_backend_baseUrl
+              value: http://backstage.matheus.me
+            - name: APP_CONFIG_backend_cors_origin
+              value: http://backstage.matheus.me
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: POSTGRES_HOST
+              value: backstage-postgresql
+            - name: POSTGRES_PORT
+              value: "5432"
+        # Configuração para ignorar o CSI e usar emptyDir
+        postgresql:
+          enabled: true
+          auth:
+            password: postgres
+          primary:
+            persistence:
+              enabled: false
+        service:
+          ports:
+            backend: 7007
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: backstage
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    createNamespace: true
