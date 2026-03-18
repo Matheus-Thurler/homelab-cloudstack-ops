@@ -6,37 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://charts.weave.works
-    chart: weave-gitops
-    targetRevision: "4.0.36"
-    helm:
-      releaseName: weave-gitops
-      values: |
-        adminUser:
-          username: admin
-          passwordHash: "$2a$10$N8.mHvWuPrap3CFj531weec3K.qy/gJHJFpJJ3pKKqjHqJ6YGoKi"
-        
-        ingress:
-          enabled: false
-        
-        service:
-          type: ClusterIP
-          port: 9001
-        
-        serviceAccount:
-          create: true
-          name: weave-gitops
-        
-        rbac:
-          create: true
-        
-        resources:
-          requests:
-            cpu: 100m
-            memory: 256Mi
-          limits:
-            cpu: 500m
-            memory: 512Mi
+    repoURL: https://github.com/weaveworks/weave-gitops
+    path: charts/weave-gitops
+    targetRevision: main
   destination:
     server: https://kubernetes.default.svc
     namespace: weave-gitops
