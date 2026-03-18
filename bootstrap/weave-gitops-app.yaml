@@ -17,23 +17,18 @@ spec:
           passwordHash: "$2a$10$N8.mHvWuPrap3CFj531weec3K.qy/gJHJFpJJ3pKKqjHqJ6YGoKi"
         
         ingress:
-          enabled: true
-          className: ""
-          annotations:
-            cert-manager.io/cluster-issuer: "letsencrypt-prod"
-          hosts:
-            - host: gitops.matheus.me
-              paths:
-                - path: /
-                  pathType: Prefix
-          tls:
-            - secretName: gitops-tls
-              hosts:
-                - gitops.matheus.me
+          enabled: false
+        
+        service:
+          type: ClusterIP
+          port: 9001
         
         serviceAccount:
-          annotations:
-            serviceaccount.impersonate.fluxcd.io/enabled: "true"
+          create: true
+          name: weave-gitops
+        
+        rbac:
+          create: true
         
         resources:
           requests:
@@ -44,7 +39,13 @@ spec:
             memory: 512Mi
   destination:
     server: https://kubernetes.default.svc
-    namespace: flux-system
+    namespace: weave-gitops
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
   syncPolicy:
     automated:
       prune: true
