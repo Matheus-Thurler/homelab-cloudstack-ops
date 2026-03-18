@@ -2,11 +2,13 @@ apiVersion: cloudstack.terasky.com/v1alpha1
 kind: VPC
 metadata:
   name: test-gitops-vpc
+  namespace: crossplane-system
 spec:
   forProvider:
     name: "GitOps-Test-VPC"
     displayText: "VPC criada via Crossplane e Argo CD"
     cidr: "10.10.0.0/16"
-    zone: "Homelab-Zone" # Ajuste para o nome exato da sua zona no CloudStack
+    zone: "Homelab-Zone"
+    vpcOffering: "Default VPC offering"
   providerConfigRef:
     name: default
