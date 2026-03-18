@@ -1,0 +1,53 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: weave-gitops
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://charts.weave.works
+    chart: weave-gitops
+    targetRevision: "4.0.36"
+    helm:
+      releaseName: weave-gitops
+      values: |
+        adminUser:
+          username: admin
+          passwordHash: "$2a$10$N8.mHvWuPrap3CFj531weec3K.qy/gJHJFpJJ3pKKqjHqJ6YGoKi"
+        
+        ingress:
+          enabled: true
+          className: ""
+          annotations:
+            cert-manager.io/cluster-issuer: "letsencrypt-prod"
+          hosts:
+            - host: gitops.matheus.me
+              paths:
+                - path: /
+                  pathType: Prefix
+          tls:
+            - secretName: gitops-tls
+              hosts:
+                - gitops.matheus.me
+        
+        serviceAccount:
+          annotations:
+            serviceaccount.impersonate.fluxcd.io/enabled: "true"
+        
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: flux-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
