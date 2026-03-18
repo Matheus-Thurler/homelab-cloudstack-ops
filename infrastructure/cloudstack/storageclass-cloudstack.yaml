@@ -1,0 +1,16 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: cloudstack-custom
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
+provisioner: csi.cloudstack.apache.org
+allowVolumeExpansion: true
+reclaimPolicy: Delete
+volumeBindingMode: WaitForFirstConsumer
+parameters:
+  zone: "Homelab-Zone"
+  diskOffering: "Small"
+  customized: "true"
+  encrypt: "false"
+  tags: "kubernetes"
