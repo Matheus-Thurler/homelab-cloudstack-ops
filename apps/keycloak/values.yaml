@@ -1,8 +1,8 @@
 replicaCount: 1
 
 image:
-  repository: keycloak/keycloak
-  tag: "20.0.5"
+  repository: jboss/keycloak
+  tag: "15.1.1"
   pullPolicy: IfNotPresent
 
 service:
