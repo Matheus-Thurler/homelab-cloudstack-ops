@@ -1,6 +1,0 @@
-apiVersion: v2
-name: port-io
-description: Port.io - Internal Developer Portal
-type: application
-version: 1.0.0
-appVersion: "latest"

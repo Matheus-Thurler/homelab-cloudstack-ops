@@ -3,4 +3,4 @@ name: keycloak
 description: Keycloak IDP for Port.io
 type: application
 version: 1.0.0
-appVersion: "24.0.0"
+appVersion: "20.0.5"
