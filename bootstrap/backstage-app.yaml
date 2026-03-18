@@ -19,6 +19,10 @@ spec:
             registry: ghcr.io
             repository: backstage/backstage
             tag: latest
+
+          extraEnvVars:
+            - name: APP_CONFIG_backend_trustProxy
+              value: "true"
           
           # App Configuration
           appConfig:
