@@ -1,0 +1,47 @@
+replicaCount: 1
+
+image:
+  repository: quay.io/keycloak/keycloak
+  tag: "24.0.0"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+
+ingress:
+  enabled: false
+
+resources:
+  requests:
+    memory: "512Mi"
+    cpu: "250m"
+  limits:
+    memory: "1Gi"
+    cpu: "500m"
+
+postgresql:
+  primary:
+    persistence:
+      enabled: true
+      size: 10Gi
+
+keycloak:
+  admin:
+    username: admin
+    password: admin123
+  
+  production: true
+  hostname: keycloak.matheus.me
+  
+  proxy:
+    headers: xforwarded
+  
+  database:
+    vendor: postgres
+    host: keycloak-postgresql
+    port: 5432
+    database: keycloak
+    username: keycloak
+    password: keycloak123

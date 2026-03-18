@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: port-io
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Matheus-Thurler/homelab-cloudstack-ops.git
+    targetRevision: HEAD
+    path: apps/port-io
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: port-io
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
