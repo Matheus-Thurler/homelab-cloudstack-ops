@@ -1,0 +1,7 @@
+apiVersion: v2
+name: weave-gitops-loader
+version: 1.0.0
+dependencies:
+  - name: weave-gitops
+    version: "4.0.36" # Versão do Chart
+    repository: "https://helm.gitops.weave.works"

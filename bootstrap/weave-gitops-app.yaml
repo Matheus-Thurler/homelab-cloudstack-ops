@@ -3,14 +3,15 @@ kind: Application
 metadata:
   name: weave-gitops
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:
     repoURL: https://github.com/Matheus-Thurler/homelab-cloudstack-ops.git
     targetRevision: HEAD
-    path: apps/weave-gitops
+    path: apps/weave-gitops # Caminho onde você criou o Chart.yaml e values.yaml
+    helm:
+      valueFiles:
+        - values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: weave-gitops
