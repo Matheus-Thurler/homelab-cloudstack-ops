@@ -1,0 +1,74 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: backstage
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://backstage.github.io/charts
+    chart: backstage
+    targetRevision: 2.6.3
+    helm:
+      values: |
+        backstage:
+          image:
+            registry: ghcr.io
+            repository: backstage/backstage
+            tag: latest
+            pullPolicy: IfNotPresent
+          appConfig:
+            app:
+              title: Homelab IDP
+              baseUrl: http://backstage.matheus.me
+            backend:
+              baseUrl: http://backstage.matheus.me
+              listen:
+                port: 7007
+              cors:
+                origin: http://backstage.matheus.me
+                methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
+                credentials: true
+              database:
+                client: pg
+                connection:
+                  host: backstage-postgresql
+                  port: 5432
+                  user: backstage
+                  password: backstage123
+            catalog:
+              rules:
+              - allow: [Component, System, API, Resource, Location]
+              locations:
+                # Location padrão - Exemplos do Backstage
+                - type: url
+                  target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all-components.yaml
+                # Location para recursos Crossplane do repositório
+                - type: url
+                  target: https://raw.githubusercontent.com/Matheus-Thurler/homelab-cloudstack-ops/main/catalog/crossplane-resources.yaml
+          extraEnvVars: []
+        postgresql:
+          enabled: true
+          auth:
+            username: backstage
+            password: backstage123
+            database: backstage
+          primary:
+            persistence:
+              enabled: true
+              size: 2Gi
+        service:
+          type: ClusterIP
+          ports:
+            backend: 7007
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: backstage
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
