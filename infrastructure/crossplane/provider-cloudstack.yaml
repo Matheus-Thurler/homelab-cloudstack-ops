@@ -1,0 +1,6 @@
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-cloudstack
+spec:
+  package: ghcr.io/terasky-oss/provider-cloudstack:v0.0.0-21.gefa2136

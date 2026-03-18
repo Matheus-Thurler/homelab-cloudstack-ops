@@ -1,0 +1,2 @@
+infrastructure/crossplane/cloudstack-creds.yaml
+*.secret.yaml
