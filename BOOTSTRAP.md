@@ -67,8 +67,26 @@ kubectl patch configmap argocd-cmd-params-cm -n argocd --type merge -p '{"data":
 kubectl rollout restart deployment/argocd-server -n argocd
 ```
 
+## 7. Crossplane (Infraestrutura via YAML)
+O Crossplane permite criar recursos no CloudStack usando arquivos Kubernetes:
+
+```bash
+# 7a. Aplicar o Crossplane (via Argo CD)
+kubectl apply -f bootstrap/crossplane-app.yaml
+
+# 7b. Configurar o Provider e ProviderConfig (v1beta1)
+kubectl apply -f infrastructure/crossplane/provider-cloudstack.yaml
+kubectl apply -f infrastructure/crossplane/provider-config.yaml
+```
+
+### Gestão de Segredos (IMPORTANTE)
+**NÃO envie chaves de API para o GitHub.** Utilize o arquivo `k8s/ccm/crossplane-creds.yaml` que já está no `.gitignore` e aplique-o manualmente:
+```bash
+kubectl apply -f k8s/ccm/crossplane-creds.yaml
+```
+
 ---
 ## 📅 Próximos Passos
-- [x] Configurar o primeiro `Gateway` e `HTTPRoute`.
-- [x] Migrar o `dashy` para ser gerenciado pelo Argo CD.
-- [ ] Instalar o Crossplane para gerenciar VMs do CloudStack.
+- [x] Configurar `Gateway` e `HTTPRoute`.
+- [x] Instalar Crossplane.
+- [ ] Testar criação de VPC/VM via GitOps.

@@ -1,4 +1,4 @@
-apiVersion: vpcs.cloudstack.terasky.com/v1alpha1
+apiVersion: cloudstack.terasky.com/v1alpha1
 kind: VPC
 metadata:
   name: test-gitops-vpc
