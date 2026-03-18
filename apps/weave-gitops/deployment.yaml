@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weave-gitops
+  namespace: weave-gitops
+  labels:
+    app: weave-gitops
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: weave-gitops
+  template:
+    metadata:
+      labels:
+        app: weave-gitops
+    spec:
+      containers:
+        - name: weave-gitops
+          image: weaveworks/weave-gitops:latest
+          args:
+            - "--namespace=weave-gitops"
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}
