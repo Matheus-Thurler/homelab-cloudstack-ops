@@ -6,9 +6,15 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/weaveworks/weave-gitops
-    path: charts/weave-gitops
-    targetRevision: main
+    repoURL: oci://ghcr.io/weaveworks/charts
+    chart: weave-gitops
+    targetRevision: 4.0.36
+    helm:
+      releaseName: weave-gitops
+      values: |
+        adminUser:
+          username: admin
+          password: admin123
   destination:
     server: https://kubernetes.default.svc
     namespace: weave-gitops
