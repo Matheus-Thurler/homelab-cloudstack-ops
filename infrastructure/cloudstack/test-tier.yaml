@@ -6,6 +6,7 @@ metadata:
   annotations:
     argocd.argoproj.io/compare-options: IgnoreExtraneous
 spec:
+  deletionPolicy: Delete
   forProvider:
     name: "k8s-tier-gitops"
     displayText: "Tier de K8s criado via GitOps"
@@ -14,6 +15,6 @@ spec:
     zone: "Homelab-Zone"
     vpcIdRef:
       name: test-gitops-vpc
-    networkOffering: "DefaultIsolatedNetworkOfferingWithSourceNatService"
+    networkOffering: "DefaultIsolatedNetworkOfferingForVpcNetworks"
   providerConfigRef:
     name: default

@@ -6,6 +6,7 @@ metadata:
   annotations:
     argocd.argoproj.io/compare-options: IgnoreExtraneous
 spec:
+  deletionPolicy: Delete
   forProvider:
     name: "GitOps-Test-VPC"
     displayText: "VPC criada via Crossplane e Argo CD"

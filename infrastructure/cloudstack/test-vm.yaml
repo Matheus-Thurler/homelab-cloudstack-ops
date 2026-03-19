@@ -6,6 +6,7 @@ metadata:
   annotations:
     argocd.argoproj.io/compare-options: IgnoreExtraneous
 spec:
+  deletionPolicy: Delete
   forProvider:
     name: "test-vm-gitops"
     displayText: "VM de Teste via Crossplane"
