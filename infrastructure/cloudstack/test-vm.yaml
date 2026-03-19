@@ -1,0 +1,22 @@
+apiVersion: cloudstack.terasky.com/v1alpha1
+kind: Instance
+metadata:
+  name: test-gitops-vm
+  namespace: crossplane-system
+  annotations:
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+spec:
+  forProvider:
+    name: "test-vm-gitops"
+    displayText: "VM de Teste via Crossplane"
+    zone: "Homelab-Zone"
+    template: "Ubuntu 24.04"
+    serviceOffering: "K8s-HA-Instance"
+    keyPair: "teste"
+    nic:
+      - networkRef:
+          name: test-gitops-tier
+    # Opcional: IP Estático se você quiser definir um específico
+    # ipAddress: "10.10.1.50"
+  providerConfigRef:
+    name: default

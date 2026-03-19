@@ -1,0 +1,19 @@
+apiVersion: cloudstack.terasky.com/v1alpha1
+kind: Network
+metadata:
+  name: test-gitops-tier
+  namespace: crossplane-system
+  annotations:
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
+spec:
+  forProvider:
+    name: "k8s-tier-gitops"
+    displayText: "Tier de K8s criado via GitOps"
+    cidr: "10.10.1.0/24"
+    gateway: "10.10.1.1"
+    zone: "Homelab-Zone"
+    vpcRef:
+      name: test-gitops-vpc
+    networkOffering: "DefaultIsolatedNetworkOfferingWithSourceNatService"
+  providerConfigRef:
+    name: default
