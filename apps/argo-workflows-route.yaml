@@ -1,0 +1,19 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: argo-workflows-route
+  namespace: argo
+spec:
+  parentRefs:
+  - name: homelab-gateway
+    namespace: nginx-gateway
+  hostnames: # O DNS estático configurado no MikroTik
+  - "workflows.matheus.me"
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: argo-server
+      port: 2746 # Porta interna padrão fixada da UI Server do Workflows 
